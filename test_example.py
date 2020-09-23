@@ -1,7 +1,7 @@
 import pymysql.cursors
 
 
-def test_fixture(sql_server_service):
+def test_sql_fixture(sql_server_service):
     container_ip_address = sql_server_service[0]
     connection = pymysql.connect(host=container_ip_address,
                                     user='john',
