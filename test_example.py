@@ -12,8 +12,7 @@ def test_fixture(sql_server_service):
 
     try:
         with connection.cursor() as cursor:
-                # Create a new record
-                create_table = """
+                create_user_table = """
                   CREATE TABLE `users` (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
                      `email` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -22,16 +21,10 @@ def test_fixture(sql_server_service):
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
                     AUTO_INCREMENT=1 ;
                 """
-                cursor.execute(create_table)
-                sql = "INSERT INTO `users` (`email`, `password`) VALUES (%s, %s)"
-                cursor.execute(sql, ('webmaster@python.org', 'very-secret'))
-                sql = "SELECT * FROM users;"
-                res = cursor.execute(sql)
-                print(res)
+                cursor.execute(create_user_table)
+                insert_user = "INSERT INTO `users` (`email`, `password`) VALUES (%s, %s)"
+                cursor.execute(insert_user, ('webmaster@python.org', 'very-secret'))
 
-
-        # connection is not autocommit by default. So you must commit to save
-        # your changes.
         connection.commit()
 
         with connection.cursor() as cursor:
@@ -39,6 +32,6 @@ def test_fixture(sql_server_service):
                 sql = "SELECT `id`, `password` FROM `users` WHERE `email`=%s"
                 cursor.execute(sql, ('webmaster@python.org',))
                 result = cursor.fetchone()
-                print(result)
+                assert result == {'id': 1, 'password': 'very-secret'}
     finally:
         connection.close()
