@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  mysql-server:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Password1
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: john
+      MYSQL_PASSWORD: Password1
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u john
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  mysql-server-another:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Password1
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: john
+      MYSQL_PASSWORD: Password1
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u john
+      timeout: 5s
+      retries: 5
+      start_period: 5s
