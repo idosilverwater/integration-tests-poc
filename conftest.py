@@ -17,7 +17,7 @@ def wait_until_healthy(container):
 def get_container_default_network_ip(container):
     default_network = container.project + "_default"
     networks = container.inspect()["NetworkSettings"]["Networks"]
-    return container.inspect()["NetworkSettings"]["Networks"][default_network]["IPAddress"]
+    return networks[default_network]["IPAddress"]
 
 @pytest.fixture(scope="session")
 def sql_server_service(request, docker_project, session_scoped_container_getter):
